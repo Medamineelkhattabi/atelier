@@ -131,14 +131,19 @@ async def approve_plan(platform, run_id: str) -> None:
     await platform.manager.approvals.decide(plan["data"]["approval_id"], True, None, "owner")
 
 
-async def shot(page, name: str) -> None:  # noqa: F811
+async def shot(page, name: str, full_page: bool = True) -> None:  # noqa: F811
     """Save a picture of the screen when PAE_E2E_SHOTS names a folder (to look at the screens; off otherwise)."""
     import os
 
     folder = os.environ.get("PAE_E2E_SHOTS")
     if folder:
         Path(folder).mkdir(parents=True, exist_ok=True)
-        await page.screenshot(path=str(Path(folder) / f"{name}.png"), full_page=True)
+        await page.wait_for_timeout(300)  # let transitions settle
+        # Pop-up notices pile up during a fast scripted run: leave them out of the picture.
+        toasts = '[role="status"][aria-live="polite"].fixed { display: none !important; }'
+        hide = await page.add_style_tag(content=toasts)
+        await page.screenshot(path=str(Path(folder) / f"{name}.png"), full_page=full_page)
+        await hide.evaluate("style => style.remove()")
 
 
 async def script_next_follow_up(page, scripts: dict, root: str = "orchestrator") -> None:  # noqa: F811
@@ -213,6 +218,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     assert await page.evaluate(is_dark) is False
     await page.get_by_role("button", name="Switch to dark screens").click()
     assert await page.evaluate(is_dark) is True
+    await shot(page, "tour-home-dark", full_page=False)
     await page.reload()
     await expect(page.get_by_label("What would you like to accomplish?")).to_be_visible()
     assert await page.evaluate(is_dark) is True, "the choice is kept"
@@ -225,6 +231,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
         await expect(nav.get_by_role("link", name=re.compile(f"^{re.escape(label)}"))).to_be_visible()
     await expect(page.get_by_text("Ideas to get started")).to_be_visible()
     await expect(page.get_by_text("Test mode: answers come from a script, not an AI model").first).to_be_visible()
+    await shot(page, "tour-home", full_page=False)
 
     # 2. Discover the team: plain profiles, and "Ask" leads back to Home with that team member chosen.
     await nav.get_by_role("link", name="My AI Team").click()
@@ -232,9 +239,11 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     for name in ("Coordinator", "Researcher", "Technical Writer", "Document Specialist"):
         await expect(page.get_by_text(name, exact=True).first).to_be_visible()
     await expect(page.get_by_text("Grader", exact=True)).to_have_count(1)  # only in "Behind the scenes"
+    await shot(page, "tour-team", full_page=False)
     await page.goto(f"{base}/team/research")
     await expect(page.get_by_role("heading", name="Researcher", level=1)).to_be_visible()
     await expect(page.get_by_text("Useful when").first).to_be_visible()
+    await shot(page, "tour-team-member", full_page=False)
     await page.get_by_role("link", name=re.compile("^Ask Researcher")).first.click()
     await expect(page.get_by_label("What would you like to accomplish?")).to_be_visible()
     await expect(page.get_by_text("Researcher").first).to_be_visible()
@@ -270,6 +279,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     await expect(plan.get_by_text("1. Researcher — Collect hiring constraints")).to_be_visible()
     await expect(plan.get_by_text("2. Technical Writer — Write the hiring notes (after 1)")).to_be_visible()
     assert not events_of(platform, run_id, "task.started"), "no step starts before the plan is checked"
+    await shot(page, "tour-plan", full_page=False)
     await plan.get_by_role("button", name="Start the plan").click()
 
     # Follow it: who works on what, what was handed over, and a clear approval.
@@ -283,6 +293,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
         card.get_by_text("Technical Writer wants to create the file “hiring-notes.md” in the project folder.")
     ).to_be_visible()
     assert not (folder / "hiring-notes.md").exists(), "nothing happens before the owner decides"
+    await shot(page, "tour-approval", full_page=False)
     await card.get_by_role("button", name="Approve").click()
 
     # 6. The consolidated result, the steps' results and the activity, all from the real run.
@@ -292,6 +303,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     await expect(page.get_by_role("columnheader", name="Constraint").first).to_be_visible()
     await expect(page.get_by_role("cell", name="Anonymised candidates").first).to_be_visible()
     assert await page.get_by_text("|---|").count() == 0
+    await shot(page, "tour-result", full_page=False)
     assert (await wait_for(platform, run_id))["status"] == "completed"
     assert (folder / "hiring-notes.md").read_text() == "# Hiring notes\n", "written in the project's own folder"
     research_step = page.get_by_role("article", name="Step 1: Collect hiring constraints")
@@ -303,6 +315,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     # 7. The detailed map is there for those who want it, built from the same recorded events.
     await page.get_by_role("button", name="Detailed map").click()
     await expect(page.locator('[data-node-id^="result:"]')).to_have_attribute("data-status", "completed")
+    await shot(page, "tour-map", full_page=False)
     approvals = page.locator('[data-node-id^="approval:"]')
     await expect(approvals).to_have_count(2)  # the plan, then the new file
     for index in range(2):
@@ -329,6 +342,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     await expect(page.get_by_text("follow-up", exact=True).first).to_be_visible()
     item = page.get_by_role("link", name=re.compile("Prepare hiring notes for the backend role")).first
     await expect(item).to_be_visible()
+    await shot(page, "tour-my-work", full_page=False)
     await item.click()
     await page.wait_for_url(re.compile(f"/workspace/{run_id}"))
 
@@ -350,6 +364,7 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
         request.get_by_text("Technical Writer wants to create the file “welcome.md” in the project folder.")
     ).to_be_visible()
     await expect(request.get_by_text(re.compile("Draft a welcome note"))).to_be_visible()
+    await shot(page, "tour-approvals", full_page=False)
     await request.get_by_role("button", name="Reject").click()
     await expect(page.get_by_text(re.compile("Rejected")).first).to_be_visible()
     assert (await wait_for(platform, other))["status"] == "completed"
@@ -412,8 +427,13 @@ async def test_desktop_journey_from_home_to_results(page, server, platform):  # 
     await expect(page.get_by_text("Prepare hiring notes for the backend role").first).to_be_visible()
     await nav.get_by_role("link", name="Settings").click()
     await expect(page.get_by_text("Claude subscription").first).to_be_visible()
+    await shot(page, "tour-settings", full_page=False)
     await nav.get_by_role("link", name="Tools & Connections").click()
     await expect(page.get_by_role("heading", name="Tools & Connections", level=1)).to_be_visible()
+    agents = page.get_by_role("region", name="AI agents")
+    await expect(agents.get_by_text("Gemini CLI").first).to_be_visible()
+    await page.locator("#ai-agents").evaluate("heading => heading.scrollIntoView({block: 'start'})")
+    await shot(page, "tour-agents", full_page=False)
 
     assert not [e for e in page.errors if "401" not in e], page.errors
 
@@ -534,7 +554,7 @@ ENGINEER_CHANGE = final_answer(
     status="complete",
     summary="The export of the candidates is there, for admins.",
     files_changed=["app/export.py"],
-    verification={"command": "pytest -m 'not reseau'", "result": "41 passed", "passed": True},
+    verification={"command": "pytest -m 'not network'", "result": "41 passed", "passed": True},
     follow_ups=[],
     issues=[],
 )
@@ -625,7 +645,7 @@ async def test_direct_journey_in_a_code_project(page, server, platform, config, 
     await expect(page.get_by_text("File changed")).to_be_visible()
     await expect(page.get_by_text("app/export.py", exact=True).first).to_be_visible()
     await expect(page.get_by_text("Passed", exact=True)).to_be_visible()
-    await expect(page.get_by_text("41 passed (pytest -m 'not reseau')")).to_be_visible()
+    await expect(page.get_by_text("41 passed (pytest -m 'not network')")).to_be_visible()
 
     # 3. The Security Engineer reviews the change on its own; the task's page says where the review stands.
     def reviews_of(change_id: str) -> list:

@@ -1,0 +1,21 @@
+name: Feature request
+description: Something Atelier should do, or do better.
+title: "Idea: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What do you want to get done?
+      description: The goal, in your own words. What is hard or slow today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How could Atelier help?
+  - type: input
+    id: agent
+    attributes:
+      label: Agent you would use it with, if any
+      placeholder: "e.g. Claude Code, Gemini CLI, Codex"

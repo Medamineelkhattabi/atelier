@@ -1,0 +1,52 @@
+name: Bug report
+description: Something doesn't work as it should.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Found a security problem? Don't describe it here: follow SECURITY.md instead.
+        Never paste secrets, tokens or private code. Atelier's logs redact secrets, but check before you paste.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. On Home, ask "..."
+        2. Approve the plan
+        3. ...
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent the team member ran on
+      options:
+        - Claude Code
+        - Gemini CLI
+        - Codex
+        - GitHub Copilot
+        - Cursor
+        - Another ACP agent
+        - Not related to an agent
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The commit you run (`git rev-parse --short HEAD`).
+  - type: input
+    id: system
+    attributes:
+      label: System
+      placeholder: "e.g. Windows 11, Docker"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error message or log lines
+      render: text

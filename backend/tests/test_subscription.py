@@ -70,7 +70,13 @@ async def test_platform_refuses_paid_paths(platform):
         platform.providers.resolve("anthropic")
     with pytest.raises(ProviderNotConfigured):
         platform.providers.register("anthropic", object())
-    for name in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "CLAUDE_CODE_OAUTH_TOKEN", "OPENAI_API_KEY"):
+    for name in (
+        "ANTHROPIC_API_KEY",
+        "ANTHROPIC_AUTH_TOKEN",
+        "CLAUDE_CODE_OAUTH_TOKEN",
+        "OPENAI_API_KEY",
+        "GEMINI_API_KEY",
+    ):
         with pytest.raises(ValueError, match="subscription"):
             platform.secrets.set(name, "x" * 20, "owner")
     from pae.settings_store import DEFAULTS

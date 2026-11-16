@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Licensing
+    url: https://github.com/Medamineelkhattabi/atelier/blob/main/docs/LICENSING.md
+    about: What you can do without a licence, and how to get one.
+  - name: Feature tour
+    url: https://github.com/Medamineelkhattabi/atelier/blob/main/docs/TOUR.md
+    about: Every screen of Atelier, step by step.

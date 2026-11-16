@@ -1,0 +1,48 @@
+name: Licence request
+description: Ask for a licence to use Atelier beyond the 30-day evaluation.
+title: "Licence request: "
+labels: ["licence request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in Atelier. This issue is **public**: keep private details (names, e-mails,
+        company data) out of it. The author will reply here and move the conversation to a private channel.
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who will use Atelier?
+      options:
+        - Just me
+        - A team (2-20 people)
+        - A company (more than 20 people)
+    validations:
+      required: true
+  - type: input
+    id: machines
+    attributes:
+      label: On how many machines?
+      placeholder: "e.g. 1, 5, 50"
+    validations:
+      required: true
+  - type: checkboxes
+    id: agents
+    attributes:
+      label: Which agents do you plan to run?
+      options:
+        - label: Claude Code
+        - label: Gemini CLI
+        - label: Codex
+        - label: GitHub Copilot
+        - label: Cursor
+        - label: Another ACP agent
+  - type: textarea
+    id: use
+    attributes:
+      label: What will your team use it for?
+      placeholder: "e.g. day-to-day feature work and reviews on three web apps"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else you need?
+      description: Help with setup, custom team members, integration with your tools...

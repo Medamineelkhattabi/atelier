@@ -98,9 +98,9 @@ function Sidebar({ pending, stream, onNavigate }: { pending: number; stream: Glo
     <div className="flex h-full flex-col">
       <div className="flex h-12 items-center gap-2 px-4">
         <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-600 text-xs font-bold text-white" aria-hidden>
-          AI
+          A
         </span>
-        <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">My AI Team</p>
+        <p className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">Atelier</p>
       </div>
       <nav aria-label="Main" className="flex-1 overflow-y-auto px-2 py-2">
         {NAV.map((group) => (
@@ -208,7 +208,7 @@ function Shell() {
         <IconButton label="Open navigation" onClick={() => setOpen(true)} aria-expanded={open} className="lg:hidden">
           <Menu className="h-5 w-5" />
         </IconButton>
-        <span className="hidden text-sm font-semibold text-zinc-900 dark:text-zinc-100 sm:inline lg:hidden">My AI Team</span>
+        <span className="hidden text-sm font-semibold text-zinc-900 dark:text-zinc-100 sm:inline lg:hidden">Atelier</span>
         <ProjectSwitcher className="ml-auto lg:ml-0" />
         {pending > 0 && (
           <NavLink

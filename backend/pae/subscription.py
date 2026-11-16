@@ -63,7 +63,11 @@ _PAID_ENV = re.compile(
 # The subscription's own long-lived token (`claude setup-token`) may be provided by the
 # owner in the environment. The platform passes it through untouched; it never stores it.
 SUBSCRIPTION_ENV = "CLAUDE_CODE_OAUTH_TOKEN"
-FORBIDDEN_SECRET = re.compile(r"^(ANTHROPIC_.*|CLAUDE_CODE_OAUTH_TOKEN|OPENAI_.*|.*_API_KEY_FOR_LLM)$")
+FORBIDDEN_SECRET = re.compile(
+    r"^(ANTHROPIC_.*|CLAUDE_CODE_OAUTH_TOKEN|OPENAI_.*|AZURE_OPENAI_.*|GEMINI_API_KEY|MISTRAL_API_KEY|GROQ_API_KEY"
+    r"|DEEPSEEK_API_KEY|OPENROUTER_API_KEY|XAI_API_KEY|TOGETHER_API_KEY|FIREWORKS_API_KEY|DASHSCOPE_API_KEY"
+    r"|MOONSHOT_API_KEY|CURSOR_API_KEY|COHERE_API_KEY|PERPLEXITY_API_KEY|.*_API_KEY_FOR_LLM)$"
+)
 
 
 class PolicyViolation(Exception):

@@ -53,7 +53,7 @@ def stamp(when: datetime, text: str) -> str:
 class FakeDocker(Docker):
     def __init__(self):
         self.up = True
-        self.items = [service("backend", [8000]), service("frontend", [8443]), service("statut")]
+        self.items = [service("backend", [8000]), service("frontend", [8443]), service("status")]
         self.since_start: timedelta = timedelta(days=1)
         self.now = T0
         self.lines: dict[str, list[str]] = {}
@@ -202,7 +202,7 @@ async def test_a_long_task_that_never_ends_and_the_projects_own_patterns_alert(p
 async def test_stopped_services_restarts_and_docker_itself(platform, watched):
     platform.settings.set("watch.diagnose", False)
     check, sent, docker, dead = watched["check"], watched["sent"], watched["docker"], watched["dead"]
-    docker.items[2] = service("statut", state="exited")  # stopped by the owner: a choice, never an alert
+    docker.items[2] = service("status", state="exited")  # stopped by the owner: a choice, never an alert
     docker.since_start = timedelta(minutes=1)  # just (re)started: ports get time to come up
     dead.add(8443)
     for n in range(3):

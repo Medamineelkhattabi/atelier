@@ -427,6 +427,9 @@ function Connections() {
 
 // ------------------------------------------------------------------ AI agents the team can run on
 
+/** An install hint that is a command to type (shown as code), not a "see this page" note. */
+const INSTALL_COMMAND = /^(npm|pnpm|yarn|npx|pip|pipx|uv|brew|winget|scoop|choco|curl|cargo|go) /;
+
 function AiAgents() {
   const engines = useEngines();
   const list = orderedEngines(engines.data?.items);
@@ -467,7 +470,12 @@ function AiAgents() {
                 </div>
                 {!engine.installed && engine.install && (
                   <p className="text-xs text-zinc-600 dark:text-zinc-400">
-                    Install: <code className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[0.75rem] text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">{engine.install}</code>
+                    Install:{' '}
+                    {INSTALL_COMMAND.test(engine.install) ? (
+                      <code className="rounded bg-zinc-100 px-1 py-0.5 font-mono text-[0.75rem] text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">{engine.install}</code>
+                    ) : (
+                      engine.install
+                    )}
                   </p>
                 )}
                 {engine.installed && !engine.builtin && engine.sign_in && (
