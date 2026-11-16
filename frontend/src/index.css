@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  :root.dark {
+    color-scheme: dark;
+  }
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    @apply bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+  }
+  :focus-visible {
+    outline-color: theme('colors.accent.500');
+  }
+}
+
+/* Orchestration canvas: only edges whose target is running or waiting (active=true from the API) flow. */
+@keyframes pae-edge-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.edge-active {
+  stroke-dasharray: 8 6;
+  animation: pae-edge-flow 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* A static dash still marks the edge as active; no movement. */
+  .edge-active {
+    animation: none !important;
+  }
+}

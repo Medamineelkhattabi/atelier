@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "pae": {
+      "command": "pae",
+      "args": ["mcp-serve", "--url", "http://127.0.0.1:8600"],
+      "env": {
+        "PAE_API_TOKEN": "${PAE_API_TOKEN}"
+      }
+    }
+  }
+}

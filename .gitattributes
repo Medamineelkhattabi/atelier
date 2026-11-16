@@ -1,0 +1,8 @@
+# Store and check out text with LF, whatever core.autocrlf says:
+# bash-run scripts (hooks, MCP launchers) break on CRLF.
+* text=auto eol=lf
+
+# Windows-only scripts keep CRLF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf

@@ -1,0 +1,12 @@
+id = "quality-gate"
+name = "Quality gate"
+description = "Code review and testing run in parallel on the same workspace; both reports are returned side by side."
+mode = "parallel"
+
+[[members]]
+agent = "code-review"
+responsibility = "Review the code for bugs, security and maintainability issues, with evidence."
+
+[[members]]
+agent = "testing"
+responsibility = "Run the test suite, analyze failures and list coverage gaps."

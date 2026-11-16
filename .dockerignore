@@ -1,0 +1,11 @@
+.git
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.egg-info
+frontend/dist
+data
+lessons
+.env
+.env.*
+*.log

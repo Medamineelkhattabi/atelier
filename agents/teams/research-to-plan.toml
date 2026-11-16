@@ -1,0 +1,12 @@
+id = "research-to-plan"
+name = "Research then plan"
+description = "The research agent gathers evidence, then the planning agent turns it into an executable plan."
+mode = "sequential"
+
+[[members]]
+agent = "research"
+responsibility = "Gather the facts, constraints and options the plan depends on, with references."
+
+[[members]]
+agent = "planning"
+responsibility = "Turn the research findings into an ordered, dependency-aware plan with risks."

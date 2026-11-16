@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp

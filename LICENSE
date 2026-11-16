@@ -1,0 +1,26 @@
+Atelier
+Copyright (c) 2026 Medamineelkhattabi (https://github.com/Medamineelkhattabi). All rights reserved.
+
+This software and its source code, documentation, agent definitions, evaluation suites and templates (the
+"Software") are the proprietary property of the copyright holder.
+
+The Software is published so that it can be read and evaluated. No licence is granted by publication. Without a
+written licence from the copyright holder, you may not use, run (other than to evaluate it for at most 30 days on
+one machine), copy, modify, merge, publish, distribute, sublicense, sell, host or offer the Software, or any work
+derived from it, as a service.
+
+Viewing the source on GitHub, and forking it on GitHub as allowed by GitHub's Terms of Service, does not grant any
+of these rights.
+
+To obtain a commercial licence, contact the copyright holder through the repository's issue tracker.
+
+The Software drives third-party AI agents (for example Claude Code, Gemini CLI, Codex, GitHub Copilot and Cursor).
+Each agent is used under its own vendor's terms, which this licence does not change. Third-party names and marks
+belong to their owners; no affiliation or endorsement is implied.
+
+Third-party open-source components used by the Software remain under their own licences.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

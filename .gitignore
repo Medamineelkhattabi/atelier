@@ -1,0 +1,41 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+
+# Machine-specific Claude Code settings
+.claude/settings.local.json
+
+# Logs can contain prompts and tool output
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Platform runtime data (never commit)
+data/
+.pae_tmp/
+frontend/dist/
+*.tsbuildinfo
+
+# Build metadata
+*.egg-info/
+
+# The owner's local rules and personal notes (never published)
+CLAUDE.local.md
+lessons/
+docs/00-environment-audit.md
+docs/learning-log.md

@@ -1,0 +1,18 @@
+services:
+  pae:
+    build: .
+    image: pae:local
+    ports:
+      # Bound to localhost only: the platform is for its owner, on this machine.
+      - "127.0.0.1:8600:8600"
+    volumes:
+      - pae-data:/data
+      # Projects the agents may work on (mounted at /workspaces inside the container).
+      - ${PAE_WORKSPACES_HOST_DIR:-./data/workspaces}:/workspaces
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
+
+volumes:
+  pae-data:

@@ -1,0 +1,25 @@
+id = "delivery"
+name = "Feature delivery"
+description = "The orchestrator plans, delegates implementation, testing, review and documentation, and consolidates the result."
+mode = "orchestrated"
+orchestrator = "orchestrator"
+
+[[members]]
+agent = "planning"
+responsibility = "Break the request into tasks and risks."
+
+[[members]]
+agent = "software-engineering"
+responsibility = "Implement the change in the workspace."
+
+[[members]]
+agent = "testing"
+responsibility = "Verify the change with tests."
+
+[[members]]
+agent = "code-review"
+responsibility = "Review the change before it is accepted."
+
+[[members]]
+agent = "documentation"
+responsibility = "Update the documentation affected by the change."
